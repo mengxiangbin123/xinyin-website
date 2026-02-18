@@ -30,6 +30,83 @@
   box-sizing: border-box;
 }
 
+/* ========== 图片与内容保护 ========== */
+/* 禁止图片拖拽、选择、保存 */
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 图片容器增加透明保护层，阻止直接交互 */
+.hero-visual,
+.product-hero-image,
+.gallery-main,
+.wearing-mode-img,
+.color-showcase-img,
+.craftsmanship-img,
+.accessories-showcase,
+.app-phone,
+.app-phone-card,
+.showcase-visual,
+.gallery-thumb {
+  position: relative;
+}
+.hero-visual::after,
+.product-hero-image::after,
+.gallery-main::after,
+.wearing-mode-img::after,
+.color-showcase-img::after,
+.craftsmanship-img::after,
+.accessories-showcase::after,
+.app-phone::after,
+.app-phone-card img + h3::before,
+.showcase-visual::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background: transparent;
+}
+
+/* gallery-thumb 需要可点击，保护层仅覆盖图片 */
+.gallery-thumb {
+  pointer-events: auto;
+}
+.gallery-thumb img {
+  pointer-events: none;
+}
+
+/* 全局禁止文字选择（可选：仅对图片区域） */
+body {
+  -webkit-touch-callout: none;
+}
+
+/* 截屏保护 - CSS 层面的视觉隐藏尝试 */
+@media print {
+  body {
+    display: none !important;
+  }
+}
+/* DRM-style: 当页面不在前台时模糊内容 */
+.content-protected-blur {
+  filter: blur(20px);
+  transition: filter 0.3s ease;
+}
+.content-protected-blur.is-active {
+  filter: none;
+}
+
 html {
   scroll-behavior: smooth;
 }

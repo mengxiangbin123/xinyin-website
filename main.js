@@ -53,4 +53,45 @@
       }
     });
   }
+
+  // Product gallery - thumbnail switching
+  var galleryMainImg = document.getElementById('galleryMainImg');
+  var galleryThumbs = document.getElementById('galleryThumbs');
+  if (galleryMainImg && galleryThumbs) {
+    var thumbButtons = galleryThumbs.querySelectorAll('.gallery-thumb');
+    thumbButtons.forEach(function (thumb) {
+      thumb.addEventListener('click', function () {
+        var imgSrc = this.getAttribute('data-img');
+        var imgAlt = this.getAttribute('data-alt');
+        if (imgSrc) {
+          // Fade transition
+          galleryMainImg.style.opacity = '0';
+          setTimeout(function () {
+            galleryMainImg.src = imgSrc;
+            if (imgAlt) galleryMainImg.alt = imgAlt;
+            galleryMainImg.style.opacity = '1';
+          }, 200);
+          // Update active state
+          thumbButtons.forEach(function (t) { t.classList.remove('active'); });
+          this.classList.add('active');
+        }
+      });
+    });
+  }
+
+  // Scroll-triggered fade-in animations
+  var observerOptions = { threshold: 0.15, rootMargin: '0px 0px -40px 0px' };
+  var fadeObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.wearing-mode, .spec-card, .variant-card, .color-showcase').forEach(function (el) {
+    el.classList.add('fade-in-up');
+    fadeObserver.observe(el);
+  });
 })();
